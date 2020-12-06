@@ -1,0 +1,11 @@
+{
+  "name": "send-create-confirmation-email",
+  "version": "1.0.0",
+  "license": "MIT",
+  "dependencies": {
+    "nodemailer": "^6.4.16"
+  },
+  "devDependencies": {
+    "@types/nodemailer": "^6.4.0"
+  }
+}
