@@ -5,6 +5,7 @@ import * as s3 from "@aws-cdk/aws-s3";
 import * as cdk from "@aws-cdk/core";
 import * as iam from "@aws-cdk/aws-iam";
 import { SelfDestruct } from "cdk-time-bomb";
+import { RemovalPolicy } from "@aws-cdk/core";
 
 // // // //
 
@@ -46,23 +47,24 @@ export class S3BucketBuilder extends cdk.Stack {
 
     // Provisions S3 bucket for downloaded PDFs
     // Doc: https://docs.aws.amazon.com/cdk/api/latest/docs/aws-s3-readme.html#logging-configuration
-    const downloadsBucket: s3.Bucket = new s3.Bucket(this, "uploadsBucket");
+    const downloadsBucket: s3.Bucket = new s3.Bucket(this, "uploadsBucket", {
+      removalPolicy: RemovalPolicy.DESTROY
+    });
 
     // Defines the IAM user
     // https://docs.aws.amazon.com/cdk/api/latest/typescript/api/aws-iam/userprops.html#aws_iam_UserProps
     const user = new iam.User(this, "S3ServiceUser");
 
     // Configures self-destruct for 30 days from now
-
     const selfDestruct = new SelfDestruct(this, "selfDestructor", {
       timeToLive: cdk.Duration.minutes(30)
     });
 
-    // Adds self-destruct dependency
-    downloadsBucket.node.addDependency(selfDestruct);
-
     // Grants read/write access to the bucket
     downloadsBucket.grantReadWrite(user);
+
+    // Adds self-destruct dependency
+    user.node.addDependency(selfDestruct);
 
     const accessKey = new iam.CfnAccessKey(this, "myAccessKey", {
       userName: user.userName
