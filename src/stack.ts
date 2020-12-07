@@ -57,7 +57,7 @@ export class S3BucketBuilder extends cdk.Stack {
 
     // Configures self-destruct for 30 days from now
     const selfDestruct = new SelfDestruct(this, "selfDestructor", {
-      timeToLive: cdk.Duration.minutes(30)
+      timeToLive: cdk.Duration.minutes(10)
     });
 
     // Grants read/write access to the bucket
