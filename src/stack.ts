@@ -9,7 +9,21 @@ import { RemovalPolicy } from "@aws-cdk/core";
 
 // // // //
 
+// function getCronRule(date: Date): string {
+//   // NOTE - we increment month by 1 here to match CRON expectations since .getUTCMonth is 0-indexed
+//   const mins = String(date.getUTCMinutes()).padStart(2, "0");
+//   const hours = String(date.getUTCHours()).padStart(2, "0");
+//   const dayofmonth = String(date.getUTCDate()).padStart(2, "0");
+//   const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+//   const year = String(date.getUTCFullYear());
+
+//   // Debug
+//   // console.log(`cron(${mins} ${hours} ${dayofmonth} ${month} ? ${year})`);
+//   return `cron(${mins} ${hours} ${dayofmonth} ${month} ? ${year})`;
+// }
+
 // Build CRON rule for CredentialsEmail
+// TODO - update this to use Moment to build a date and expose add/subtract methds
 function getCreateConfirmationCron(): string {
   const date = new Date();
   const mins = String(date.getUTCMinutes() + 5).padStart(2, "0");
@@ -57,7 +71,7 @@ export class S3BucketBuilder extends cdk.Stack {
 
     // Configures self-destruct for 30 days from now
     const selfDestruct = new SelfDestruct(this, "selfDestructor", {
-      timeToLive: cdk.Duration.minutes(10)
+      timeToLive: cdk.Duration.days(30)
     });
 
     // Grants read/write access to the bucket
@@ -70,7 +84,7 @@ export class S3BucketBuilder extends cdk.Stack {
       userName: user.userName
     });
 
-    // Pulls variables for lambda ENV
+    // Pulls bucket + access key + secret for email notification
     const BUCKET_NAME = downloadsBucket.bucketName;
     const ACCESS_KEY_ID = accessKey.ref;
     const ACCESS_KEY_SECRET = accessKey.attrSecretAccessKey;
