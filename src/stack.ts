@@ -251,25 +251,6 @@ export class S3BucketBuilder extends cdk.Stack {
 
     // // // //
     // Outputs
-    // new cdk.CfnOutput(this, "userArn", {
-    //   description: "userArn",
-    //   value: user.userArn
-    // });
-
-    // new cdk.CfnOutput(this, "userName", {
-    //   description: "userName",
-    //   value: user.userName
-    // });
-
-    // new cdk.CfnOutput(this, "bucketArn", {
-    //   description: "bucketArn",
-    //   value: downloadsBucket.bucketArn
-    // });
-
-    // new cdk.CfnOutput(this, "bucketWebsiteUrl", {
-    //   description: "bucketWebsiteUrl",
-    //   value: downloadsBucket.bucketWebsiteUrl
-    // });
 
     new cdk.CfnOutput(this, "bucketName", {
       description: "bucketName",
