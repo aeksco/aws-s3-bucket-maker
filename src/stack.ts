@@ -62,7 +62,7 @@ export class S3BucketBuilder extends cdk.Stack {
     // Provisions S3 bucket for downloaded PDFs
     // Doc: https://docs.aws.amazon.com/cdk/api/latest/docs/aws-s3-readme.html#logging-configuration
     const downloadsBucket: s3.Bucket = new s3.Bucket(this, "uploadsBucket", {
-      removalPolicy: RemovalPolicy.DESTROY
+      removalPolicy: RemovalPolicy.DESTROY,
     });
 
     // Defines the IAM user
@@ -71,7 +71,7 @@ export class S3BucketBuilder extends cdk.Stack {
 
     // Configures self-destruct for 30 days from now
     const selfDestruct = new SelfDestruct(this, "selfDestructor", {
-      timeToLive: cdk.Duration.days(30)
+      timeToLive: cdk.Duration.days(30),
     });
 
     // Grants read/write access to the bucket
@@ -81,7 +81,7 @@ export class S3BucketBuilder extends cdk.Stack {
     user.node.addDependency(selfDestruct);
 
     const accessKey = new iam.CfnAccessKey(this, "myAccessKey", {
-      userName: user.userName
+      userName: user.userName,
     });
 
     // Pulls bucket + access key + secret for email notification
@@ -104,8 +104,8 @@ export class S3BucketBuilder extends cdk.Stack {
           EMAIL_RECIPIENT,
           BUCKET_NAME,
           ACCESS_KEY_ID,
-          ACCESS_KEY_SECRET
-        }
+          ACCESS_KEY_SECRET,
+        },
       }
     );
 
@@ -114,7 +114,7 @@ export class S3BucketBuilder extends cdk.Stack {
       new iam.PolicyStatement({
         actions: ["ses:SendEmail", "SES:SendRawEmail"],
         resources: ["*"],
-        effect: iam.Effect.ALLOW
+        effect: iam.Effect.ALLOW,
       })
     );
 
@@ -122,7 +122,7 @@ export class S3BucketBuilder extends cdk.Stack {
       this,
       "SendCreateConfirmationEmailRule",
       {
-        schedule: events.Schedule.expression(getCreateConfirmationCron())
+        schedule: events.Schedule.expression(getCreateConfirmationCron()),
       }
     );
 
@@ -145,8 +145,8 @@ export class S3BucketBuilder extends cdk.Stack {
           EMAIL_RECIPIENT,
           BUCKET_NAME: BUCKET_NAME,
           ACCESS_KEY_ID: ACCESS_KEY_ID,
-          ACCESS_KEY_SECRET: ACCESS_KEY_SECRET
-        }
+          ACCESS_KEY_SECRET: ACCESS_KEY_SECRET,
+        },
       }
     );
 
@@ -155,7 +155,7 @@ export class S3BucketBuilder extends cdk.Stack {
       new iam.PolicyStatement({
         actions: ["ses:SendEmail", "SES:SendRawEmail"],
         resources: ["*"],
-        effect: iam.Effect.ALLOW
+        effect: iam.Effect.ALLOW,
       })
     );
 
@@ -163,7 +163,7 @@ export class S3BucketBuilder extends cdk.Stack {
       this,
       "SendCredentialsEmailRule",
       {
-        schedule: events.Schedule.expression(getCreateConfirmationCron())
+        schedule: events.Schedule.expression(getCreateConfirmationCron()),
       }
     );
 
@@ -186,8 +186,8 @@ export class S3BucketBuilder extends cdk.Stack {
           EMAIL_RECIPIENT,
           BUCKET_NAME: BUCKET_NAME,
           ACCESS_KEY_ID: ACCESS_KEY_ID,
-          ACCESS_KEY_SECRET: ACCESS_KEY_SECRET
-        }
+          ACCESS_KEY_SECRET: ACCESS_KEY_SECRET,
+        },
       }
     );
 
@@ -196,7 +196,7 @@ export class S3BucketBuilder extends cdk.Stack {
       new iam.PolicyStatement({
         actions: ["ses:SendEmail", "SES:SendRawEmail"],
         resources: ["*"],
-        effect: iam.Effect.ALLOW
+        effect: iam.Effect.ALLOW,
       })
     );
 
@@ -204,7 +204,7 @@ export class S3BucketBuilder extends cdk.Stack {
       this,
       "SendDeleteReminderEmailRule",
       {
-        schedule: events.Schedule.expression(getCreateConfirmationCron())
+        schedule: events.Schedule.expression(getCreateConfirmationCron()),
       }
     );
 
@@ -224,8 +224,8 @@ export class S3BucketBuilder extends cdk.Stack {
         environment: {
           EMAIL_ADMIN,
           EMAIL_SOURCE,
-          EMAIL_RECIPIENT
-        }
+          EMAIL_RECIPIENT,
+        },
       }
     );
 
@@ -233,7 +233,7 @@ export class S3BucketBuilder extends cdk.Stack {
       new iam.PolicyStatement({
         actions: ["ses:SendEmail", "SES:SendRawEmail"],
         resources: ["*"],
-        effect: iam.Effect.ALLOW
+        effect: iam.Effect.ALLOW,
       })
     );
 
@@ -241,7 +241,7 @@ export class S3BucketBuilder extends cdk.Stack {
       this,
       "SendDeleteConfirmatilEmailRule",
       {
-        schedule: events.Schedule.expression("rate(10 minutes)")
+        schedule: events.Schedule.expression("rate(10 minutes)"),
       }
     );
 
@@ -273,17 +273,17 @@ export class S3BucketBuilder extends cdk.Stack {
 
     new cdk.CfnOutput(this, "bucketName", {
       description: "bucketName",
-      value: downloadsBucket.bucketName
+      value: downloadsBucket.bucketName,
     });
 
     new cdk.CfnOutput(this, "accessKeyId", {
       description: "accessKeyId",
-      value: accessKey.ref
+      value: accessKey.ref,
     });
 
     new cdk.CfnOutput(this, "secretAccessKey", {
       description: "secretAccessKey",
-      value: accessKey.attrSecretAccessKey
+      value: accessKey.attrSecretAccessKey,
     });
   }
 }

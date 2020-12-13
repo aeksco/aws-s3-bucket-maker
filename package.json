@@ -1,15 +1,20 @@
 {
-  "name": "aws-pdf-textract-pipeline",
+  "name": "aws-s3-bucket-maker",
   "version": "1.0.0",
-  "description": "Scheduled pipline for AWS textract + lambda",
-  "private": true,
+  "description": "Builds a self-destructing S3 bucket and associated IAM Role for temporary file transfer workflows. Built with AWS CDK + TypeScript.",
   "scripts": {
     "build": "tsc",
+    "postinstall": "yarn install --cwd ./src/send-create-confirmation-email && yarn install --cwd ./src/send-credentials-email && yarn install --cwd ./src/send-delete-confirmation-email && yarn install --cwd ./src/send-delete-reminder-email",
     "test": "jest",
     "watch": "tsc -w",
     "cdk": "cdk"
   },
   "license": "MIT",
+  "author": {
+    "name": "Alexander Schwartzberg",
+    "email": "aeksco@gmail.com",
+    "url": "https://github.com/aeksco"
+  },
   "devDependencies": {
     "@aws-cdk/assert": "^1.7.0",
     "@types/jest": "^24.0.25",
@@ -19,16 +24,11 @@
     "typescript": "~3.7.2"
   },
   "dependencies": {
-    "@aws-cdk/aws-dynamodb": "^1.7.0",
     "@aws-cdk/aws-events": "^1.7.0",
     "@aws-cdk/aws-events-targets": "^1.7.0",
     "@aws-cdk/aws-iam": "^1.7.0",
     "@aws-cdk/aws-lambda": "^1.7.0",
-    "@aws-cdk/aws-lambda-event-sources": "^1.7.0",
-    "@aws-cdk/aws-sns": "^1.76.0",
     "@aws-cdk/core": "^1.7.0",
-    "@types/puppeteer": "^2.0.0",
-    "cdk-time-bomb": "^1.7.0",
-    "puppeteer-lambda": "^1.1.3"
+    "cdk-time-bomb": "^1.7.0"
   }
 }

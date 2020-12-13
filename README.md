@@ -2,8 +2,9 @@
 
 :mag: Builds a self-destructing S3 bucket and associated IAM Role for temporary file transfer workflows. Built with AWS CDK + TypeScript.
 
-<!-- ![Example Extension Popup](https://i.imgur.com/3F89JQK.png "Example Extension Popup") -->
-<!-- https://cloudcraft.co/view/e135397e-a673-411e-9ee7-05a5618052b2?key=R-OLiwplnkA9dtQxtkVqOw&interactive=true&embed=true -->
+![S3 Bucket Maker Diagram](https://i.imgur.com/X1wQ6m1.png "S3 Bucket Maker Diagram")
+
+<!-- https://app.cloudcraft.co/blueprint/1202bf1e-7678-4db6-8e01-cf863e4f41c8 -->
 
 **Getting Started**
 
@@ -14,6 +15,18 @@ yarn install
 yarn build
 cdk bootstrap
 cdk deploy
+```
+
+Note that `EMAIL_SOURCE`, `EMAIL_ADMIN`, and `EMAIL_RECIPIENT` environment variables must be defined for `cdk bootstrap` and `cdk deploy`:
+
+- `EMAIL_SOURCE` - the email being used by SES to send messages to `EMAIL_ADMIN` and `EMAIL_RECIPIENT`.
+- `EMAIL_ADMIN` - the email of the administrator creating the S3 bucket and IAM user
+- `EMAIL_RECIPIENT` - the email of the recipient of the S3 bucket read + write credentials
+
+The simplest way to inject these variables into the environment is simply by defining them before invoking `cdk bootstrap` or `cdk deploy`:
+
+```
+EMAIL_SOURCE=source@test.com EMAIL_ADMIN=admin@test.com EMAIL_RECIPIENT=recipient@test.com cdk deploy
 ```
 
 ### Overview
@@ -49,7 +62,6 @@ The following is an overview of each process performed by this CDK stack:
 - [Jest](https://jestjs.io)
 - [AWS CDK](https://aws.amazon.com/cdk/)
 - [AWS Lambda](https://aws.amazon.com/lambda/)
-- [AWS DynamoDB](https://aws.amazon.com/dynamodb/)
 - [AWS S3](https://aws.amazon.com/s3/)
 - [AWS SES](https://aws.amazon.com/ses/)
 - [AWS IAM](https://aws.amazon.com/iam/)
@@ -60,9 +72,10 @@ The following is an overview of each process performed by this CDK stack:
 - [CDK TypeScript Reference](https://docs.aws.amazon.com/cdk/api/latest/typescript/api/index.html)
 - [CDK Assertion Package](https://github.com/aws/aws-cdk/tree/master/packages/%40aws-cdk/assert)
 - [awesome-cdk repo](https://github.com/eladb/awesome-cdk)
+- [aws-pdf-textract-pipeline](https://github.com/aeksco/aws-pdf-textract-pipeline)
 
 **License**
 
 Opensourced under the MIT License.
 
-Built with :heart: by [aeksco](https://twitter.com/aeksco)
+Built with :heart: &nbsp;by [aeksco](https://twitter.com/aeksco)
